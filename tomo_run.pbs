@@ -1,0 +1,46 @@
+#!/bin/bash
+# File name: tomo_run.pbs
+#PBS -A mat134
+#PBS -l walltime=2:00:00
+#PBS -l nodes=1024
+#PBS -l gres=atlas1%atlas2
+
+cd /lustre/atlas1/cli106/scratch/2ya/tomo/tomo_real
+
+export ROOT_CT_DIR="/lustre/atlas1/cli106/scratch/2ya/tomo/tomo_real/data"
+
+
+module load PrgEnv-pgi
+module load cudatoolkit
+export CRAY_CUDA_PROXY=1
+export Sub_Sample_Radial=1
+export Sub_Sample_Theta=1
+export Ninner_Loops=1
+export Nouter_Loops=200
+export Opt_ncg=5
+export Opt_lambda=100.0
+export Opt_mu=0.001
+export Radon_wpu=100
+
+
+export EXP_CT_NAME="CT_Aluminum_ironcenter_0090"
+
+aprun -n 1024 -N 1 ./tv_hpc
+
+export EXP_CT_NAME="Derek_injec_0040"
+
+aprun -n 1024 -N 1 ./tv_hpc
+
+export EXP_CT_NAME="TURBINECT_0010"
+
+aprun -n 1024 -N 1 ./tv_hpc
+
+export EXP_CT_NAME="TURBINECT_0180"
+
+aprun -n 1024 -N 1 ./tv_hpc
+
+
+
+
+
+
